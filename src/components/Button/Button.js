@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
 import css from './Button.module.css';
-export default class Button extends Component {
-  handleClick = () => {
-    this.props.changePageNumber();
+
+export default function Button({ changePageNumber }) {
+  const handleClick = () => {
+    changePageNumber();
   };
-  render() {
-    return (
-      <button
-        type="click"
-        className={css.loadButton}
-        onClick={this.handleClick}
-      >
-        <span className="button-label">Load more</span>
-      </button>
-    );
-  }
+  return (
+    <button type="click" className={css.loadButton} onClick={handleClick}>
+      <span className="button-label">Load more</span>
+    </button>
+  );
 }

@@ -1,55 +1,44 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from 'components/Searchbar/Searchbar';
 import css from './App.module.css';
-
 import ImageGallery from './ImageGallery/ImageGallery';
 
-export default class App extends Component {
-  state = {
-    page: 1,
-    images: [],
-    searchValue: '',
+export default function App() {
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+
+  const onImageCondition = () => {
+    setImages(false);
+  };
+  const onImagesChange = params => {
+    setImages([...images, ...params]);
   };
 
-  onImageCondition = () => {
-    this.setState({ images: false });
+  const changePageNumber = () => {
+    setPage(page + 1);
   };
 
-  onImagesChange = params => {
-    this.setState(prevState => ({
-      images: [...prevState.images, ...params],
-    }));
+  const onSubmit = inputValue => {
+    setSearchValue(inputValue);
+    setPage(1);
+    setImages([]);
   };
 
-  changePageNumber = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
-
-  onSubmit = inputValue => {
-    this.setState({ searchValue: inputValue });
-    this.setState({ page: 1 });
-    this.setState({ images: [] });
-  };
-
-  render() {
-    const { searchValue, page, images } = this.state;
-    return (
-      <div className={css.app}>
-        <Searchbar onSubmit={this.onSubmit} />
-        <ImageGallery
-          onImageCondition={this.onImageCondition}
-          changePageNumber={this.changePageNumber}
-          onImagesChange={this.onImagesChange}
-          searchValue={searchValue}
-          page={page}
-          images={images}
-        />
-        <ToastContainer autoClose={2000} position="top-center" />
-      </div>
-    );
-  }
+  return (
+    <div className={css.app}>
+      <Searchbar onSubmit={onSubmit} />
+      <ImageGallery
+        onImageCondition={onImageCondition}
+        changePageNumber={changePageNumber}
+        onImagesChange={onImagesChange}
+        searchValue={searchValue}
+        page={page}
+        images={images}
+      />
+      <ToastContainer autoClose={2000} position="top-center" />
+    </div>
+  );
 }
