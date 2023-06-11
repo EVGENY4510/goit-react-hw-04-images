@@ -1,0 +1,16 @@
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+.galleryWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.noImageTitle {
+  font-size: 30px;
+  font-weight: 700;
+}
