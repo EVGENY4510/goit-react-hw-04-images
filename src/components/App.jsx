@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from 'components/Searchbar/Searchbar';
@@ -10,12 +10,9 @@ export default function App() {
   const [images, setImages] = useState([]);
   const [searchValue, setSearchValue] = useState('');
 
-  const onImageCondition = () => {
-    setImages(false);
-  };
-  const onImagesChange = params => {
-    setImages([...images, ...params]);
-  };
+  const onImagesChange = useCallback(params => {
+    setImages(prevImages => [...prevImages, ...params]);
+  }, []);
 
   const changePageNumber = () => {
     setPage(page + 1);
@@ -31,7 +28,6 @@ export default function App() {
     <div className={css.app}>
       <Searchbar onSubmit={onSubmit} />
       <ImageGallery
-        onImageCondition={onImageCondition}
         changePageNumber={changePageNumber}
         onImagesChange={onImagesChange}
         searchValue={searchValue}

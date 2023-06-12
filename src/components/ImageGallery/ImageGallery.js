@@ -8,7 +8,6 @@ import { getImages } from 'api/PixabayApi';
 import { ImWink } from 'react-icons/im';
 
 export default function ImageGallery({
-  onImageCondition,
   changePageNumber,
   onImagesChange,
   searchValue,
@@ -16,6 +15,7 @@ export default function ImageGallery({
   images,
 }) {
   const [loading, setLoading] = useState(false);
+  const [renderCondition, setRenderCondition] = useState(false);
 
   useEffect(() => {
     if (!searchValue) {
@@ -28,23 +28,24 @@ export default function ImageGallery({
         const data = await getImages(searchValue, page);
 
         if (data.hits.length !== 0) {
+          setRenderCondition(false);
           return onImagesChange(data.hits);
         }
-        onImageCondition();
+        setRenderCondition(true);
       } catch (error) {
         toast.error('Ops something went wrong');
       } finally {
         setLoading(false);
       }
     }
-  }, [searchValue, page]);
+  }, [searchValue, page, onImagesChange]);
 
   return (
     <div className={css.galleryWrapper}>
       {loading && <Loader />}
 
       <ul className={css.gallery}>
-        {!images > 0 ? (
+        {renderCondition ? (
           <p className={css.noImageTitle}>
             Sorry, no such image, please try another one <ImWink />
           </p>
