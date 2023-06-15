@@ -23,6 +23,7 @@ export default function ImageGallery({
     }
     fetchData();
     async function fetchData() {
+      setRenderCondition(false);
       setLoading(true);
       try {
         const data = await getImages(searchValue, page);
@@ -62,7 +63,9 @@ export default function ImageGallery({
           })
         )}
       </ul>
-      {images.length > 0 && <Button changePageNumber={changePageNumber} />}
+      {images.length > 0 && !renderCondition && (
+        <Button changePageNumber={changePageNumber} />
+      )}
     </div>
   );
 }
